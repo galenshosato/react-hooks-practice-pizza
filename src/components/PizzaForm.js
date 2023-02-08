@@ -1,8 +1,31 @@
 import React from "react";
 
-function PizzaForm() {
+function PizzaForm({setPizzaList}) {
+  
+  function handleSubmit (event) {
+    event.preventDefault()
+    let newPizza = {
+      topping: event.target.topping.value,
+      size: event.target.size.value,
+      vegetarian: event.target.vegetarian.value
+    }
+
+    fetch('http://localhost:3001/pizzas', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newPizza)
+    })
+    .then(resp => resp.json())
+
+    setPizzaList(prev => [...prev, newPizza])
+
+  }
+
+
   return (
-    <form onSubmit={null /*handle that submit*/}>
+    <form onSubmit={handleSubmit}>
       <div className="form-row">
         <div className="col-5">
           <input
